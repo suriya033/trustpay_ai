@@ -59,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Row(
           children: [
             Icon(Icons.dns_rounded, color: AppColors.primary, size: 22),
@@ -72,20 +72,21 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Backend API server URL used for database, AI milestone generation, and PayPal Sandbox calls:',
-              style: TextStyle(fontSize: 13, color: AppColors.textSecondary, height: 1.4),
+              'Backend API URL (Render or local machine):',
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
             TextField(
               controller: hostController,
               decoration: const InputDecoration(
-                hintText: 'http://192.168.1.160:5000',
+                hintText: 'https://your-backend.onrender.com',
                 prefixIcon: Icon(Icons.link_rounded, size: 20),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Wrap(
               spacing: 8,
+              runSpacing: 6,
               children: [
                 ActionChip(
                   label: const Text('192.168.1.160:5000', style: TextStyle(fontSize: 11)),
@@ -94,9 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 ActionChip(
-                  label: const Text('10.0.2.2:5000', style: TextStyle(fontSize: 11)),
+                  label: const Text('Render Cloud', style: TextStyle(fontSize: 11)),
                   onPressed: () {
-                    hostController.text = 'http://10.0.2.2:5000';
+                    hostController.text = 'https://trustpay-backend.onrender.com';
                   },
                 ),
               ],
@@ -180,147 +181,72 @@ class _LoginScreenState extends State<LoginScreen> {
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Top Utility Bar: Server IP Pill + Settings
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: _showServerSettings,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: AppColors.secondaryBackground,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: AppColors.cardBorder),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: 7,
-                                    height: 7,
-                                    decoration: const BoxDecoration(
-                                      color: AppColors.success,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    ApiConstants.baseUrl.replaceAll('http://', ''),
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textSecondary,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  const Icon(Icons.edit, size: 11, color: AppColors.textMuted),
-                                ],
-                              ),
-                            ),
+                      // Top bar with discreet Settings button
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.settings_outlined,
+                            color: AppColors.textSecondary,
+                            size: 22,
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.settings_outlined, color: AppColors.textSecondary, size: 22),
-                            onPressed: _showServerSettings,
-                            tooltip: 'API Server Settings',
-                          ),
-                        ],
+                          onPressed: _showServerSettings,
+                          tooltip: 'API Server Settings',
+                        ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 8),
 
-                      // Brand Header Card
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 52,
-                            height: 52,
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.primary.withAlpha(40),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.shield_rounded,
-                                color: AppColors.textInverse,
-                                size: 30,
-                              ),
-                            ),
+                      // Brand Icon
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.shield_rounded,
+                            color: Colors.white,
+                            size: 26,
                           ),
-                          const SizedBox(width: 14),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'TrustPay AI',
-                                style: TextStyle(
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w900,
-                                  color: AppColors.textPrimary,
-                                  letterSpacing: -0.6,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryLight,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'SMART MILESTONES • PAYPAL ESCROW',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.primary,
-                                    letterSpacing: 0.4,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 18),
 
+                      // Title & Tagline
                       const Text(
-                        'Welcome Back',
+                        'TrustPay AI',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 28,
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
+                          letterSpacing: -0.6,
                         ),
                       ),
                       const SizedBox(height: 4),
                       const Text(
-                        'Sign in to manage verified project deliverables and release milestone payments.',
+                        'Smart Milestones. Transparent Payments.',
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: 14,
                           color: AppColors.textSecondary,
-                          height: 1.4,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 32),
 
                       // Email Field
                       CustomTextField(
                         controller: _emailController,
-                        label: 'Work Email Address',
+                        label: 'Email Address',
                         hint: 'name@example.com',
-                        prefixIcon: Icons.alternate_email_rounded,
+                        prefixIcon: Icons.mail_outline_rounded,
                         keyboardType: TextInputType.emailAddress,
                         validator: (val) {
                           if (val == null || val.trim().isEmpty) return 'Please enter your email';
@@ -328,13 +254,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 18),
 
                       // Password Field
                       CustomTextField(
                         controller: _passwordController,
                         label: 'Password',
-                        hint: '••••••••••••',
+                        hint: 'Enter your password',
                         prefixIcon: Icons.lock_outline_rounded,
                         obscureText: _obscurePassword,
                         suffixIcon: IconButton(
@@ -350,13 +276,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 8),
 
                       // Forgot Password Link
                       Align(
                         alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
+                        child: GestureDetector(
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -364,9 +290,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                          ),
                           child: const Text(
                             'Forgot Password?',
                             style: TextStyle(
@@ -377,107 +300,85 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 24),
 
                       // Sign In Button
                       CustomButton(
-                        text: 'Sign In to Workspace',
+                        text: 'Sign In',
                         icon: Icons.login_rounded,
                         isLoading: authProvider.isLoading,
                         onPressed: _handleLogin,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 28),
 
-                      // Hackathon 1-Tap Quick Fill Card
+                      // Clean Demo Logins Section
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                         decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(16),
+                          color: AppColors.secondaryBackground,
+                          borderRadius: BorderRadius.circular(14),
                           border: Border.all(color: AppColors.cardBorder),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withAlpha(6),
-                              blurRadius: 10,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            const Row(
                               children: [
-                                const Row(
-                                  children: [
-                                    Icon(Icons.bolt_rounded, size: 18, color: AppColors.warning),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      'Quick Demo Accounts',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w800,
-                                        color: AppColors.textPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.warningLight,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Text(
-                                    '1-TAP AUTOFILL',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w800,
-                                      color: AppColors.warning,
-                                    ),
+                                Icon(Icons.bolt_rounded, size: 16, color: AppColors.warning),
+                                SizedBox(width: 6),
+                                Text(
+                                  'DEMO LOGINS',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.6,
+                                    color: AppColors.textSecondary,
                                   ),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 12),
-
-                            // Client Tile
-                            _buildDemoRoleTile(
-                              role: 'client',
-                              name: 'Sarah Jenkins',
-                              roleLabel: 'Client / Fund Milestones',
-                              email: 'client@trustpay.ai',
-                              password: 'Password123!',
-                              icon: Icons.business_center_rounded,
-                              iconBg: AppColors.primaryLight,
-                              iconColor: AppColors.primary,
-                            ),
-                            const SizedBox(height: 8),
-
-                            // Freelancer Tile
-                            _buildDemoRoleTile(
-                              role: 'freelancer',
-                              name: 'Alex Rivera',
-                              roleLabel: 'Freelancer / Submit Deliverables',
-                              email: 'freelancer@trustpay.ai',
-                              password: 'Password123!',
-                              icon: Icons.code_rounded,
-                              iconBg: const Color(0xFFE0F2FE),
-                              iconColor: const Color(0xFF0369A1),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildDemoChip(
+                                    label: 'Client (Sarah)',
+                                    icon: Icons.business_center_outlined,
+                                    isSelected: _activeDemoRole == 'client',
+                                    onTap: () => _quickFill(
+                                      'client@trustpay.ai',
+                                      'Password123!',
+                                      'client',
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: _buildDemoChip(
+                                    label: 'Freelancer (Alex)',
+                                    icon: Icons.code_rounded,
+                                    isSelected: _activeDemoRole == 'freelancer',
+                                    onTap: () => _quickFill(
+                                      'freelancer@trustpay.ai',
+                                      'Password123!',
+                                      'freelancer',
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 28),
 
                       // Register Link
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            "New to TrustPay AI? ",
+                            "Don't have an account? ",
                             style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                           ),
                           GestureDetector(
@@ -490,32 +391,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             },
                             child: const Text(
-                              'Create Account',
+                              'Register',
                               style: TextStyle(
                                 color: AppColors.primary,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
-
-                      // Trust Badges Footer
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildTrustBadge(Icons.lock_rounded, '256-Bit SSL'),
-                            const SizedBox(width: 14),
-                            _buildTrustBadge(Icons.auto_awesome, 'Gemini AI Verified'),
-                            const SizedBox(width: 14),
-                            _buildTrustBadge(Icons.shield_outlined, 'PayPal Sandbox'),
-                          ],
-                        ),
-                      ),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
@@ -527,111 +413,48 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildDemoRoleTile({
-    required String role,
-    required String name,
-    required String roleLabel,
-    required String email,
-    required String password,
+  Widget _buildDemoChip({
+    required String label,
     required IconData icon,
-    required Color iconBg,
-    required Color iconColor,
+    required bool isSelected,
+    required VoidCallback onTap,
   }) {
-    final isSelected = _activeDemoRole == role;
-
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: () => _quickFill(email, password, role),
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryLight : AppColors.secondaryBackground,
-          borderRadius: BorderRadius.circular(12),
+          color: isSelected ? AppColors.primaryLight : Colors.white,
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.cardBorder,
             width: isSelected ? 1.5 : 1,
           ),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: iconBg,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(icon, color: iconColor, size: 20),
+            Icon(
+              icon,
+              size: 16,
+              color: isSelected ? AppColors.primary : AppColors.textPrimary,
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      if (isSelected) ...[
-                        const SizedBox(width: 6),
-                        const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 14),
-                      ],
-                    ],
-                  ),
-                  Text(
-                    roleLabel,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.cardBorder,
-                ),
-              ),
+            const SizedBox(width: 6),
+            Flexible(
               child: Text(
-                isSelected ? 'Filled' : 'Select',
+                label,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: isSelected ? Colors.white : AppColors.textPrimary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: isSelected ? AppColors.primary : AppColors.textPrimary,
                 ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildTrustBadge(IconData icon, String text) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 13, color: AppColors.textMuted),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textMuted,
-          ),
-        ),
-      ],
     );
   }
 }
