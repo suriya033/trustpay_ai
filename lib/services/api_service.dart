@@ -49,7 +49,7 @@ class ApiService {
       debugPrint('[API GET] $url');
       final response = await http
           .get(Uri.parse(url), headers: headers)
-          .timeout(const Duration(seconds: 25));
+          .timeout(const Duration(seconds: 65));
       return _handleResponse(response);
     } catch (e) {
       debugPrint('[API GET ERROR] $url: $e');
@@ -68,7 +68,7 @@ class ApiService {
             headers: headers,
             body: body != null ? jsonEncode(body) : null,
           )
-          .timeout(const Duration(seconds: 35));
+          .timeout(const Duration(seconds: 65));
       return _handleResponse(response);
     } catch (e) {
       debugPrint('[API POST ERROR] $url: $e');
@@ -87,7 +87,7 @@ class ApiService {
             headers: headers,
             body: body != null ? jsonEncode(body) : null,
           )
-          .timeout(const Duration(seconds: 25));
+          .timeout(const Duration(seconds: 65));
       return _handleResponse(response);
     } catch (e) {
       debugPrint('[API PUT ERROR] $url: $e');
@@ -102,7 +102,7 @@ class ApiService {
       debugPrint('[API DELETE] $url');
       final response = await http
           .delete(Uri.parse(url), headers: headers)
-          .timeout(const Duration(seconds: 25));
+          .timeout(const Duration(seconds: 65));
       return _handleResponse(response);
     } catch (e) {
       if (e is ApiException) rethrow;

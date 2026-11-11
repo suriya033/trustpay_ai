@@ -1,14 +1,14 @@
-import 'package:flutter/foundation.dart';
 import '../../services/storage_service.dart';
 
 class ApiConstants {
+  static const String productionUrl = 'https://trustpay-ai-43ip.onrender.com';
   static String customHost = '';
 
   static Future<void> init() async {
     final saved = await StorageService.getCustomHost();
     if (saved != null && saved.isNotEmpty) {
-      // Auto-purge stale or dead IPs from previous test sessions
-      if (saved.contains('10.236.71.84')) {
+      // Auto-purge stale local IPs so app uses live Render cloud backend
+      if (saved.contains('10.236.71.84') || saved.contains('192.168.1.160')) {
         await StorageService.saveCustomHost('');
         customHost = '';
       } else {
@@ -21,15 +21,7 @@ class ApiConstants {
     if (customHost.isNotEmpty) {
       return customHost;
     }
-    if (kIsWeb) {
-      return 'http://localhost:5000';
-    }
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      // Local network IP of host machine for physical Android devices
-      return 'http://192.168.1.160:5000';
-    }
-    // Windows, macOS, Linux desktop
-    return 'http://localhost:5000';
+    return productionUrl;
   }
 
   // Auth Endpoints

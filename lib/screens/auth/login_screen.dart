@@ -28,7 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    if (ApiConstants.customHost.contains('10.236.71.84')) {
+    if (ApiConstants.customHost.contains('10.236.71.84') ||
+        ApiConstants.customHost.contains('192.168.1.160')) {
       ApiConstants.customHost = '';
       StorageService.saveCustomHost('');
     }
@@ -79,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: hostController,
               decoration: const InputDecoration(
-                hintText: 'https://your-backend.onrender.com',
+                hintText: 'https://trustpay-ai-43ip.onrender.com',
                 prefixIcon: Icon(Icons.link_rounded, size: 20),
               ),
             ),
@@ -89,15 +90,15 @@ class _LoginScreenState extends State<LoginScreen> {
               runSpacing: 6,
               children: [
                 ActionChip(
-                  label: const Text('192.168.1.160:5000', style: TextStyle(fontSize: 11)),
+                  label: const Text('Render Live (Cloud)', style: TextStyle(fontSize: 11)),
                   onPressed: () {
-                    hostController.text = 'http://192.168.1.160:5000';
+                    hostController.text = 'https://trustpay-ai-43ip.onrender.com';
                   },
                 ),
                 ActionChip(
-                  label: const Text('Render Cloud', style: TextStyle(fontSize: 11)),
+                  label: const Text('Local Wi-Fi (192.168.1.160)', style: TextStyle(fontSize: 11)),
                   onPressed: () {
-                    hostController.text = 'https://trustpay-backend.onrender.com';
+                    hostController.text = 'http://192.168.1.160:5000';
                   },
                 ),
               ],
@@ -129,7 +130,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleLogin() async {
-    if (ApiConstants.customHost.contains('10.236.71.84')) {
+    if (ApiConstants.customHost.contains('10.236.71.84') ||
+        ApiConstants.customHost.contains('192.168.1.160')) {
       ApiConstants.customHost = '';
       await StorageService.saveCustomHost('');
       if (mounted) setState(() {});
