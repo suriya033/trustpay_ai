@@ -70,9 +70,27 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: hostController,
               decoration: const InputDecoration(
-                hintText: 'http://10.236.71.84:5000',
+                hintText: 'http://192.168.1.160:5000',
                 prefixIcon: Icon(Icons.link_rounded, size: 20),
               ),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              children: [
+                ActionChip(
+                  label: const Text('192.168.1.160:5000', style: TextStyle(fontSize: 11)),
+                  onPressed: () {
+                    hostController.text = 'http://192.168.1.160:5000';
+                  },
+                ),
+                ActionChip(
+                  label: const Text('10.0.2.2:5000', style: TextStyle(fontSize: 11)),
+                  onPressed: () {
+                    hostController.text = 'http://10.0.2.2:5000';
+                  },
+                ),
+              ],
             ),
           ],
         ),
