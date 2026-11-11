@@ -99,14 +99,15 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Set host URL (e.g. http://192.168.1.160:3000 for Android phone or http://10.0.2.2:3000 for emulator):',
+              'Set custom API URL (default: https://trustpay-ai-43ip.onrender.com):',
               style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: hostController,
-              decoration:
-                  const InputDecoration(hintText: 'http://localhost:3000'),
+              decoration: const InputDecoration(
+                hintText: 'https://trustpay-ai-43ip.onrender.com',
+              ),
             ),
           ],
         ),
