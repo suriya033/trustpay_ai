@@ -15,6 +15,9 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
 
+// Trust reverse proxy headers (required for Render, Heroku, etc. with express-rate-limit)
+app.set("trust proxy", 1);
+
 // Security and middleware
 app.use(helmet());
 app.use(
@@ -29,6 +32,15 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Rate limiting
 app.use("/api/", apiLimiter);
+
+// Root route
+app.get("/", (req, res) => {
+  res.json({
+    status: "OK",
+    application: "TrustPay AI API",
+    healthCheck: "/api/health",
+  });
+});
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
