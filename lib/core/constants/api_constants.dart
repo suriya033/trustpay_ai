@@ -7,7 +7,13 @@ class ApiConstants {
   static Future<void> init() async {
     final saved = await StorageService.getCustomHost();
     if (saved != null && saved.isNotEmpty) {
-      customHost = saved;
+      // Auto-purge stale or dead IPs from previous test sessions
+      if (saved.contains('10.236.71.84')) {
+        await StorageService.saveCustomHost('');
+        customHost = '';
+      } else {
+        customHost = saved;
+      }
     }
   }
 

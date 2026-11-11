@@ -26,6 +26,15 @@ class _LoginScreenState extends State<LoginScreen> {
   String _activeDemoRole = ''; // 'client' | 'freelancer'
 
   @override
+  void initState() {
+    super.initState();
+    if (ApiConstants.customHost.contains('10.236.71.84')) {
+      ApiConstants.customHost = '';
+      StorageService.saveCustomHost('');
+    }
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
@@ -119,6 +128,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleLogin() async {
+    if (ApiConstants.customHost.contains('10.236.71.84')) {
+      ApiConstants.customHost = '';
+      await StorageService.saveCustomHost('');
+      if (mounted) setState(() {});
+    }
+
     if (!_formKey.currentState!.validate()) return;
 
     final authProvider = context.read<AuthProvider>();
