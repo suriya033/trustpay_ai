@@ -205,19 +205,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 8),
 
                       // Brand Icon
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.shield_rounded,
-                            color: Colors.white,
-                            size: 26,
-                          ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.asset(
+                          'assets/icon/app_icon.png',
+                          width: 52,
+                          height: 52,
+                          fit: BoxFit.cover,
                         ),
                       ),
                       const SizedBox(height: 18),
